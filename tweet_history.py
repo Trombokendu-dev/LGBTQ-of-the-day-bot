@@ -20,16 +20,16 @@ def tweet_historicat_event():
 
     # declare empty string
     history_tweet = ""
-    tweet_template = "This day in LGBTQ history: "
+    tweet_template = "this day in LGBTQ history 🏳️‍🌈🏳️‍⚧️📜\n\n"
 
     # get today's date
     today = str(date.today())
 
     # extract month and day
-    month_and_day = today[5:]
+    month_and_day = today[5:]  # slice off the first 5 characters
 
     # make a list of the events that match month_and_day
-    list_of_history_tweets = [key + ": " + val for key, val in events.items() if month_and_day in key]
+    list_of_history_tweets = [key + ":\n" + val for key, val in events.items() if month_and_day in key]
     length_list_history_tweets = len(list_of_history_tweets)
 
     '''if list has multiple events for the same month and day,
@@ -38,10 +38,13 @@ def tweet_historicat_event():
     # IDEA: generate a thread of tweets if it has multiple events in chronological order
 
     if length_list_history_tweets != 0:
-        if length_list_history_tweets > 1:
-            history_tweet = tweet_template + random.choice(list_of_history_tweets)
+        history_tweet = random.choice(list_of_history_tweets)
+        year_difference = int(today[:4]) - int(history_tweet[:4])
+        if (year_difference > 1):
+            tweet_template = str(year_difference) + " years ago " + tweet_template
         else:
-            history_tweet = tweet_template + list_of_history_tweets[0]
+            tweet_template = str(year_difference) + " year ago " + tweet_template
+        history_tweet = tweet_template + history_tweet
         api.update_status(history_tweet)
         print('tweet accomplished')
     else:
